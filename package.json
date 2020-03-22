@@ -1,0 +1,51 @@
+{
+  "name": "compressor",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Encode/decode array of numbers into optimized Base 64 URL compatible",
+  "author": "Flibustier",
+  "scripts": {
+    "format": "prettier src/** src/**/*.js *.{js,json} --write",
+    "lint": "eslint src/**",
+    "test": "jest"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^25.1.0",
+    "eslint": "5.16.0",
+    "eslint-plugin-jest": "^23.8.2",
+    "jest": "25.1.0",
+    "prettier": "1.19.1"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "browser": true,
+      "node": true,
+      "jest": true
+    },
+    "extends": [
+      "eslint:recommended"
+    ],
+    "plugins": [
+      "jest"
+    ],
+    "parser": "babel-eslint"
+  },
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.m?js$": "babel-jest"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "license": "MIT"
+}
