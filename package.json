@@ -20,6 +20,7 @@
     "@babel/preset-env": "^7.9.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^25.1.0",
+    "codecov": "^3.6.5",
     "eslint": "5.16.0",
     "eslint-plugin-jest": "^23.8.2",
     "jest": "25.1.0",
@@ -44,7 +45,8 @@
     "verbose": true,
     "transform": {
       "^.+\\.m?js$": "babel-jest"
-    }
+    },
+    "collectCoverage": true
   },
   "browserslist": [
     "> 1%",

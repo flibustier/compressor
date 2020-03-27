@@ -3,8 +3,8 @@
 <p align="center">
   <a href="https://github.com/prettier/prettier/actions?query=workflow%3ALint+branch%3Amaster">
     <img alt="Github Actions Build Status" src="https://img.shields.io/github/workflow/status/prettier/prettier/Lint?label=Lint&style=flat-square"></a>
-  <a href="https://codecov.io/gh/prettier/prettier">
-    <img alt="Codecov Coverage Status" src="https://img.shields.io/codecov/c/github/prettier/prettier.svg?style=flat-square"></a>
+  <a href="https://codecov.io/gh/flibustier/compressor">
+    <img alt="Codecov Coverage Status" src="https://img.shields.io/codecov/c/github/flibustier/compressor.svg?style=flat-square"></a>
   <a href="https://www.npmjs.com/package/prettier">
     <img alt="npm version" src="https://img.shields.io/npm/v/prettier.svg?style=flat-square"></a>
   <a href="#badge">
