@@ -1,18 +1,10 @@
 import {
   bitsNeeded,
-  toBase64,
-  toUInt6,
-  toBinaryEncodedIn,
   fromBase64,
-  invertBitString
+  toBase64,
+  toBinaryEncodedIn,
+  toUInt6
 } from "../primitives";
-
-describe("invertBitString", () => {
-  it("should invert a bit", () => {
-    expect(invertBitString("1")).toEqual("0");
-    expect(invertBitString("0")).toEqual("1");
-  });
-});
 
 describe.each`
   number              | bitsExpected
@@ -85,16 +77,16 @@ describe.each`
 
 describe.each`
   uint6 | binary
-  ${0}  | ${"000000"}
-  ${2}  | ${"000010"}
-  ${5}  | ${"000101"}
-  ${8}  | ${"001000"}
-  ${17} | ${"010001"}
-  ${60} | ${"111100"}
-  ${62} | ${"111110"}
-  ${63} | ${"111111"}
-  ${64} | ${"000000"}
-  ${66} | ${"000010"}
+  ${0}  | ${["0", "0", "0", "0", "0", "0"]}
+  ${2}  | ${["0", "0", "0", "0", "1", "0"]}
+  ${5}  | ${["0", "0", "0", "1", "0", "1"]}
+  ${8}  | ${["0", "0", "1", "0", "0", "0"]}
+  ${17} | ${["0", "1", "0", "0", "0", "1"]}
+  ${60} | ${["1", "1", "1", "1", "0", "0"]}
+  ${62} | ${["1", "1", "1", "1", "1", "0"]}
+  ${63} | ${["1", "1", "1", "1", "1", "1"]}
+  ${64} | ${["0", "0", "0", "0", "0", "0"]}
+  ${66} | ${["0", "0", "0", "0", "1", "0"]}
 `("toBinaryEncodedIn 6 bits encoding", ({ uint6, binary }) => {
   it(`should return ${binary} for ${uint6}`, () => {
     expect(toBinaryEncodedIn(6)(uint6)).toEqual(binary);

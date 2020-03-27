@@ -1,40 +1,48 @@
-import { chunk, last } from "lodash";
-
 import {
-  ZERO_ENDING_COMPLETION_FLAG,
+  BITS_PER_BASE64_SYMBOL,
+  DISAMBIGUATION_FLAG,
+  chunks,
   fromBase64,
-  toBinaryEncodedIn,
-  toFlatBinaryArray
+  last,
+  toBinaryEncodedIn
 } from "./primitives";
 
-const removeAllTrailingBits = binaryArray => {
-  const lastBit = last(binaryArray);
+const removeAllTrailingBits = bitArray => {
+  const lastBit = last(bitArray);
 
-  while (last(binaryArray) === lastBit) binaryArray.pop();
+  while (last(bitArray) === lastBit) bitArray.pop();
 };
 
+const extractFromBase64URL = base64URL => {
+  const [firstChar, ...base64Array] = base64URL.split("");
+
+  const isAmbiguousEnding = last(base64Array) === DISAMBIGUATION_FLAG;
+
+  if (isAmbiguousEnding) base64Array.pop();
+
+  return {
+    bitsPerNumber: fromBase64(firstChar) + 1,
+    isAmbiguousEnding,
+    uint6Array: base64Array.map(fromBase64)
+  };
+};
+
+const fromBinary = bitArray => parseInt(bitArray.join(""), 2);
+
 export const decode = base64URL => {
-  const base64Array = base64URL.split("");
+  const { bitsPerNumber, isAmbiguousEnding, uint6Array } = extractFromBase64URL(
+    base64URL
+  );
 
-  const bitsPerNumber = fromBase64(base64Array[0]) + 1;
+  const bitArray = uint6Array.flatMap(
+    toBinaryEncodedIn(BITS_PER_BASE64_SYMBOL)
+  );
 
-  const lastChar = base64Array.pop();
+  if (isAmbiguousEnding) removeAllTrailingBits(bitArray);
 
-  if (lastChar !== ZERO_ENDING_COMPLETION_FLAG) base64Array.push(lastChar);
+  const chunkedInXBits = chunks(bitArray, bitsPerNumber); // [['1', '0', …], ['0', '1', …], …]
 
-  const uint6Array = base64Array.slice(1).map(fromBase64); // [42, 23, …]
+  if (last(chunkedInXBits).length < bitsPerNumber) chunkedInXBits.pop();
 
-  const binaryArray = toFlatBinaryArray(uint6Array.map(toBinaryEncodedIn(6))); // ['1', '0', '1', …]
-
-  if (lastChar === ZERO_ENDING_COMPLETION_FLAG) {
-    removeAllTrailingBits(binaryArray);
-  }
-
-  const chunkedInXBits = chunk(binaryArray, bitsPerNumber); // [['1', '0', …], ['0', '1', …], …]
-
-  const lastChunk = chunkedInXBits[chunkedInXBits.length - 1];
-
-  if (lastChunk.length < bitsPerNumber) chunkedInXBits.pop();
-
-  return chunkedInXBits.map(bitArray => parseInt(bitArray.join(""), 2));
+  return chunkedInXBits.map(fromBinary);
 };

@@ -1,47 +1,49 @@
-import { chunk, last } from "lodash";
-
 import {
+  BITS_PER_BASE64_SYMBOL,
+  DISAMBIGUATION_FLAG,
   bitsNeeded,
-  invertBitString,
-  toBinaryEncodedIn,
-  toFlatBinaryArray,
+  chunks,
+  last,
   toBase64,
-  toUInt6,
-  BASE64_BITS_PER_SYMBOL,
-  ZERO_ENDING_COMPLETION_FLAG
+  toBinaryEncodedIn,
+  toUInt6
 } from "./primitives";
 
 const isLastChunkAmbiguous = (lastChunk, encodingLength) =>
-  lastChunk.length < BASE64_BITS_PER_SYMBOL &&
-  (BASE64_BITS_PER_SYMBOL - lastChunk.length) % encodingLength === 0;
+  lastChunk.length < BITS_PER_BASE64_SYMBOL &&
+  (BITS_PER_BASE64_SYMBOL - lastChunk.length) % encodingLength === 0;
+
+const formatOutput = (encodingLength, uint6Array, isAmbiguousEnding) => {
+  const firstCharacter = toBase64(encodingLength - 1);
+  const data = uint6Array.map(toBase64).join("");
+  const optionalEnding = isAmbiguousEnding ? DISAMBIGUATION_FLAG : "";
+
+  return `${firstCharacter}${data}${optionalEnding}`;
+};
 
 // [4, 1, 6, 0, 1, 3] => 'ChwL'
 export const encode = numbers => {
-  let flagForZeroAmbiguousEnding = false;
+  let isAmbiguousEnding = false;
 
-  const bigestNumber = Math.max(...numbers);
+  const biggestNumber = Math.max(...numbers);
 
-  const encodingLength = bitsNeeded(bigestNumber);
+  const encodingLength = bitsNeeded(biggestNumber);
 
-  const binaryStrings = numbers.map(toBinaryEncodedIn(encodingLength)); // ['00101010', '00000100', …]
+  const bitArray = numbers.flatMap(toBinaryEncodedIn(encodingLength)); // ['1', '0', '1', '1', …]
 
-  const binaryArray = toFlatBinaryArray(binaryStrings); // ['1', '0', '1', '1', …]
-
-  const chunkedIn6Bits = chunk(binaryArray, BASE64_BITS_PER_SYMBOL); // [['1' , '0', …], ['1', '1', …], …]
+  const chunkedIn6Bits = chunks(bitArray, BITS_PER_BASE64_SYMBOL); // [['1' , '0', …], ['1', '1', …], …]
 
   const lastChunk = chunkedIn6Bits.pop();
 
   if (isLastChunkAmbiguous(lastChunk, encodingLength)) {
-    const lastBitInverted = invertBitString(last(lastChunk));
+    const lastInvertedBit = last(lastChunk) == "1" ? "0" : "1";
     lastChunk.push(
-      lastBitInverted.repeat(BASE64_BITS_PER_SYMBOL - lastChunk.length)
+      lastInvertedBit.repeat(BITS_PER_BASE64_SYMBOL - lastChunk.length)
     );
-    flagForZeroAmbiguousEnding = true;
+    isAmbiguousEnding = true;
   }
 
   const uint6Array = [...chunkedIn6Bits, lastChunk].map(toUInt6); // [42, 23, 45, …]
 
-  return `${toBase64(encodingLength - 1)}${uint6Array.map(toBase64).join("")}${
-    flagForZeroAmbiguousEnding ? ZERO_ENDING_COMPLETION_FLAG : ""
-  }`;
+  return formatOutput(encodingLength, uint6Array, isAmbiguousEnding);
 };

@@ -12,9 +12,6 @@
   "engines": {
     "node": ">= 11.0.0"
   },
-  "dependencies": {
-    "lodash": "^4.17.15"
-  },
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
@@ -39,7 +36,11 @@
     "plugins": [
       "jest"
     ],
-    "parser": "babel-eslint"
+    "parser": "babel-eslint",
+    "rules": {
+      "sort-imports": "warn",
+      "sort-keys": "warn"
+    }
   },
   "jest": {
     "verbose": true,
