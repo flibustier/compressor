@@ -1,9 +1,23 @@
 {
-  "name": "compressor",
-  "version": "0.1.0",
+  "name": "c8r",
+  "version": "1.0.1",
   "private": false,
   "description": "Encode/decode array of numbers into optimized Base 64 URL compatible",
   "author": "Flibustier",
+  "keywords": [
+    "javascript",
+    "base 64",
+    "url shortener",
+    "compression",
+    "URL",
+    "dynamic bit length"
+  ],
+  "homepage": "https://github.com/flibustier/compressor#readme",
+  "repository": "github:flibustier/compressor",
+  "main": "src/index.js",
+  "files": [
+    "src/*"
+  ],
   "scripts": {
     "format": "prettier src/** src/**/*.js *.{js,json} --write",
     "lint": "eslint src/**",

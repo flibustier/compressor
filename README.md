@@ -5,8 +5,8 @@
     <img alt="Github Actions Build Status" src="https://img.shields.io/github/workflow/status/prettier/prettier/Lint?label=Lint&style=flat-square"></a>
   <a href="https://codecov.io/gh/flibustier/compressor">
     <img alt="Codecov Coverage Status" src="https://img.shields.io/codecov/c/github/flibustier/compressor.svg?style=flat-square"></a>
-  <a href="https://www.npmjs.com/package/prettier">
-    <img alt="npm version" src="https://img.shields.io/npm/v/prettier.svg?style=flat-square"></a>
+  <a href="https://www.npmjs.com/package/c8r">
+    <img alt="npm version" src="https://img.shields.io/npm/v/c8r.svg?style=flat-square"></a>
   <a href="#badge">
     <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"></a>
 </p>
@@ -30,6 +30,18 @@ Compressor is a Javascript encoder/decoder for array of numbers. It encodes numb
 Compressor can encode any array of numbers, and decode Base 64 URL string.
 
 ## Usage
+
+Install with `npm` or `yarn`
+
+```sh
+npm install c8r
+```
+
+Or
+
+```sh
+yarn add c8r
+```
 
 ### Encode
 
