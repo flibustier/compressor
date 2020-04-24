@@ -14,21 +14,21 @@
   ],
   "homepage": "https://github.com/flibustier/compressor#readme",
   "repository": "github:flibustier/compressor",
-  "main": "src/index",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "src/*.js"
+    "dist"
   ],
   "scripts": {
-    "format": "prettier src/** src/**/*.js *.{js,json} --write",
+    "format": "prettier src/** src/**/*.js *.{js,ts} --write",
     "lint": "eslint src/**",
+    "build": "tsc",
     "test": "jest"
-  },
-  "engines": {
-    "node": ">= 11.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
+    "@babel/preset-typescript": "^7.9.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^25.1.0",
     "codecov": "^3.6.5",
@@ -59,7 +59,7 @@
   "jest": {
     "verbose": true,
     "transform": {
-      "^.+\\.m?js$": "babel-jest"
+      "^.+\\.m?(j|t)s$": "babel-jest"
     },
     "collectCoverage": true
   },
