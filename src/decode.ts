@@ -7,13 +7,13 @@ import {
   toBinaryEncodedIn
 } from "./primitives";
 
-const removeAllTrailingBits = bitArray => {
+const removeAllTrailingBits = (bitArray: string[]) => {
   const lastBit = last(bitArray);
 
   while (last(bitArray) === lastBit) bitArray.pop();
 };
 
-const extractFromBase64URL = base64URL => {
+const extractFromBase64URL = (base64URL: string) => {
   const [firstChar, ...base64Array] = base64URL.split("");
 
   const isAmbiguousEnding = last(base64Array) === DISAMBIGUATION_FLAG;
@@ -27,9 +27,13 @@ const extractFromBase64URL = base64URL => {
   };
 };
 
-const fromBinary = bitArray => parseInt(bitArray.join(""), 2);
+const fromBinary = (bitArray: string[]) => parseInt(bitArray.join(""), 2);
 
-export const decode = base64URL => {
+export const decode = (base64URL: string): number[] => {
+  if (!base64URL.length) {
+    return [];
+  }
+
   const { bitsPerNumber, isAmbiguousEnding, uint6Array } = extractFromBase64URL(
     base64URL
   );
