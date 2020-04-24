@@ -5,8 +5,10 @@ const MAX_SUPPORTED_BITS_PER_NUMBER = 32;
 export const BITS_PER_BASE64_SYMBOL = 6;
 export const DISAMBIGUATION_FLAG = "=";
 
+type uint6 = number;
+
 // 42 => 6 (bits needed: 101010)
-export const bitsNeeded = number => {
+export const bitsNeeded = (number: number) => {
   if (number === 0) return 1;
 
   let i = 0;
@@ -16,29 +18,32 @@ export const bitsNeeded = number => {
 };
 
 // 42 => 'q'
-export const toBase64 = uint6 => BASE64_URL_ALPHABET[uint6 % 64];
+export const toBase64 = (uint6: uint6) => BASE64_URL_ALPHABET[uint6 % 64];
 
 // 'q' => 42
-export const fromBase64 = symbol => BASE64_URL_ALPHABET.indexOf(symbol);
+export const fromBase64 = (symbol: string) =>
+  BASE64_URL_ALPHABET.indexOf(symbol);
 
 // In 6 bits, 42 => ['1', '0', '1', '0', '1', '0']
-export const toBinaryEncodedIn = numberOfBits => numberToConvert =>
+export const toBinaryEncodedIn = (encodingBitSize: number) => (
+  numberToConvert: number
+) =>
   numberToConvert
     .toString(2)
-    .slice(-numberOfBits)
-    .padStart(numberOfBits, 0)
+    .slice(-encodingBitSize)
+    .padStart(encodingBitSize, "0")
     .split("");
 
 // ['1', '0', '1', '0', '1', '0'] => 42
-export const toUInt6 = binaryArray => {
-  const binaryString = binaryArray.join("").padEnd(BITS_PER_BASE64_SYMBOL, 0);
+export const toUInt6 = (binaryArray: string[]): uint6 => {
+  const binaryString = binaryArray.join("").padEnd(BITS_PER_BASE64_SYMBOL, "0");
 
   return parseInt(binaryString, 2);
 };
 
-export const last = array => array[array.length - 1];
+export const last = (array: any[]) => array[array.length - 1];
 
-export function chunks(array, chunkSize) {
+export function chunks(array: string[], chunkSize: number): string[][] {
   const output = [];
   for (let i = 0; i < array.length; i += chunkSize) {
     output.push(array.slice(i, i + chunkSize));

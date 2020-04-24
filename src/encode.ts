@@ -9,11 +9,15 @@ import {
   toUInt6
 } from "./primitives";
 
-const isLastChunkAmbiguous = (lastChunk, encodingLength) =>
+const isLastChunkAmbiguous = (lastChunk: string[], encodingLength: number) =>
   lastChunk.length < BITS_PER_BASE64_SYMBOL &&
   (BITS_PER_BASE64_SYMBOL - lastChunk.length) % encodingLength === 0;
 
-const formatOutput = (encodingLength, uint6Array, isAmbiguousEnding) => {
+const formatOutput = (
+  encodingLength: number,
+  uint6Array: number[],
+  isAmbiguousEnding: boolean
+) => {
   const firstCharacter = toBase64(encodingLength - 1);
   const data = uint6Array.map(toBase64).join("");
   const optionalEnding = isAmbiguousEnding ? DISAMBIGUATION_FLAG : "";
@@ -22,7 +26,11 @@ const formatOutput = (encodingLength, uint6Array, isAmbiguousEnding) => {
 };
 
 // [4, 1, 6, 0, 1, 3] => 'ChwL'
-export const encode = numbers => {
+export const encode = (numbers: number[]): string => {
+  if (!numbers.length) {
+    return "";
+  }
+
   let isAmbiguousEnding = false;
 
   const biggestNumber = Math.max(...numbers);
@@ -33,7 +41,7 @@ export const encode = numbers => {
 
   const chunkedIn6Bits = chunks(bitArray, BITS_PER_BASE64_SYMBOL); // [['1' , '0', …], ['1', '1', …], …]
 
-  const lastChunk = chunkedIn6Bits.pop();
+  const lastChunk = chunkedIn6Bits.pop() || [];
 
   if (isLastChunkAmbiguous(lastChunk, encodingLength)) {
     const lastInvertedBit = last(lastChunk) == "1" ? "0" : "1";
