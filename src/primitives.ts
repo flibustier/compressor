@@ -25,14 +25,13 @@ export const fromBase64 = (symbol: string) =>
   BASE64_URL_ALPHABET.indexOf(symbol);
 
 // In 6 bits, 42 => ['1', '0', '1', '0', '1', '0']
-export const toBinaryEncodedIn = (encodingBitSize: number) => (
-  numberToConvert: number
-) =>
-  numberToConvert
-    .toString(2)
-    .slice(-encodingBitSize)
-    .padStart(encodingBitSize, "0")
-    .split("");
+export const toBinaryEncodedIn =
+  (encodingBitSize: number) => (numberToConvert: number) =>
+    numberToConvert
+      .toString(2)
+      .slice(-encodingBitSize)
+      .padStart(encodingBitSize, "0")
+      .split("");
 
 // ['1', '0', '1', '0', '1', '0'] => 42
 export const toUInt6 = (binaryArray: string[]): uint6 => {

@@ -3,7 +3,7 @@ import {
   fromBase64,
   toBase64,
   toBinaryEncodedIn,
-  toUInt6
+  toUInt6,
 } from "../primitives";
 
 describe.each`

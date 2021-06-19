@@ -4,7 +4,7 @@ import {
   chunks,
   fromBase64,
   last,
-  toBinaryEncodedIn
+  toBinaryEncodedIn,
 } from "./primitives";
 
 const removeAllTrailingBits = (bitArray: string[]) => {
@@ -23,7 +23,7 @@ const extractFromBase64URL = (base64URL: string) => {
   return {
     bitsPerNumber: fromBase64(firstChar) + 1,
     isAmbiguousEnding,
-    uint6Array: base64Array.map(fromBase64)
+    uint6Array: base64Array.map(fromBase64),
   };
 };
 
@@ -34,9 +34,8 @@ export const decode = (base64URL: string): number[] => {
     return [];
   }
 
-  const { bitsPerNumber, isAmbiguousEnding, uint6Array } = extractFromBase64URL(
-    base64URL
-  );
+  const { bitsPerNumber, isAmbiguousEnding, uint6Array } =
+    extractFromBase64URL(base64URL);
 
   const bitArray = uint6Array.flatMap(
     toBinaryEncodedIn(BITS_PER_BASE64_SYMBOL)

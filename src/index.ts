@@ -5,5 +5,5 @@ export { decode, encode };
 
 export default {
   decode,
-  encode
+  encode,
 };
